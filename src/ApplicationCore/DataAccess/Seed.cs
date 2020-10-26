@@ -24,7 +24,7 @@ namespace ApplicationCore.DataAccess
 			{
 				var defaultContext = scope.ServiceProvider.GetRequiredService<DefaultContext>();
 				defaultContext.Database.Migrate();
-
+				
 				await SeedCities(defaultContext);
 
 				var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
@@ -38,6 +38,19 @@ namespace ApplicationCore.DataAccess
 			Console.WriteLine("Done seeding database.");
 			Console.WriteLine();
 		}
+
+		
+
+		static async Task CreateCategoryIfNotExist(DefaultContext context, Category category)
+		{
+			var existCategory = context.Categories.FirstOrDefault(x => x.Name == category.Name);
+			if (existCategory == null)
+			{
+				context.Categories.Add(category);
+				await context.SaveChangesAsync();
+			}
+		}
+
 
 		static async Task SeedCities(DefaultContext context)
 		{

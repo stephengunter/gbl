@@ -10,8 +10,6 @@ namespace ApplicationCore.Views
 {
 	public class AttachmentViewModel : BaseRecordView
 	{
-		public int Id { get; set; }
-
 		public int PostId { get; set; }
 
 		public string PostType { get; set; }

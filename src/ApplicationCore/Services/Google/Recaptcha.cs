@@ -11,6 +11,7 @@ using ApplicationCore.Views;
 using System.Collections;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ApplicationCore.Consts;
 
 namespace ApplicationCore.Services
 {
@@ -31,7 +32,7 @@ namespace ApplicationCore.Services
             _apiSecret = Environment.GetEnvironmentVariable("RECAPTCHA_SECRET");
             if (String.IsNullOrEmpty(_apiSecret)) throw new EnvironmentVariableNotFound("RECAPTCHA_SECRET");
 
-            _httpClient = clientFactory.CreateClient(Consts.Google);
+            _httpClient = clientFactory.CreateClient(Common.Google);
         }
 
         public async Task<bool> VerifyAsync(string token, string ip = "")

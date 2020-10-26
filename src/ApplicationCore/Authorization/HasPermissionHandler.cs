@@ -15,15 +15,7 @@ namespace ApplicationCore.Authorization
 		{
 			Permissions permissione = requirement.Permission;
 
-			if (permissione == Permissions.Subscriber)
-			{
-				if(context.CurrentUserIsSubscriber())
-				{
-					context.Succeed(requirement);
-					return Task.CompletedTask;
-				} 
-			}
-			else if(permissione == Permissions.Admin)
+			if (permissione == Permissions.Admin)
 			{
 				if(context.CurrentUserIsBoss() || context.CurrentUserIsDev())
 				{

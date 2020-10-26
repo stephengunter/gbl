@@ -8,6 +8,7 @@ using ApplicationCore.Models;
 using Microsoft.AspNetCore.Identity;
 using ApplicationCore.Helpers;
 using ApplicationCore.Exceptions;
+using ApplicationCore.Consts;
 
 namespace ApplicationCore.Services
 {
@@ -24,10 +25,6 @@ namespace ApplicationCore.Services
 
         IEnumerable<IdentityRole> GetRolesByUserId(string userId);
         Task<bool> IsAdminAsync(User user);
-
-        Task<User> FindSubscriberAsync(string userId);
-        Task<User> AddSubscriberRoleAsync(string userId);
-        Task RemoveSubscriberRoleAsync(string userId);
 
         
         Task<bool> HasPasswordAsync(User user);
@@ -101,53 +98,12 @@ namespace ApplicationCore.Services
         {
             var roles = await GetRolesAsync(user);
             if (roles.IsNullOrEmpty()) return false;
-            var match = roles.Where(r => r.Equals(Consts.DevRoleName) || r.Equals(Consts.BossRoleName)).FirstOrDefault();
+            var match = roles.Where(r => r.Equals(RoleNames.Dev) || r.Equals(RoleNames.Boss)).FirstOrDefault();
 
             return match != null;
         }
 
-        public async Task RemoveSubscriberRoleAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) throw new UserNotFoundException(userId, "Id");
-
-            bool isSubscriber = await _userManager.IsInRoleAsync(user, ApplicationCore.Consts.SubscriberRoleName);
-            if (isSubscriber)
-            {
-                var result = await _userManager.RemoveFromRoleAsync(user, ApplicationCore.Consts.SubscriberRoleName);
-                if (!result.Succeeded)
-                {
-                    var error = result.Errors.FirstOrDefault();
-                    throw new AddUserToRoleException($"{error.Code} : {error.Description}");
-                }
-            }
-            
-        }
-
-        public async Task<User> AddSubscriberRoleAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) throw new UserNotFoundException(userId, "Id");
-
-            bool isSubscriber = await _userManager.IsInRoleAsync(user, ApplicationCore.Consts.SubscriberRoleName);
-            if (isSubscriber) return user;
-
-            var result = await _userManager.AddToRoleAsync(user, ApplicationCore.Consts.SubscriberRoleName);
-            if (result.Succeeded) return user;
-
-            var error = result.Errors.FirstOrDefault();
-            throw new AddUserToRoleException($"{error.Code} : {error.Description}");
-        }
-
-        public async Task<User> FindSubscriberAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) throw new UserNotFoundException(userId, "Id");
-
-            bool isSubscriber = await _userManager.IsInRoleAsync(user, ApplicationCore.Consts.SubscriberRoleName);
-
-            return isSubscriber ? user : null;
-        }
+        
 
         public async Task<bool> HasPasswordAsync(User user) => await _userManager.HasPasswordAsync(user);
 

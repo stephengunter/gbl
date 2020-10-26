@@ -7,7 +7,7 @@ namespace ApplicationCore.Models
 {
 	public enum PostType
 	{
-		Emoji = 0,
+		Default = 0,
 		Notice = 1,
 		None = -1
 	}

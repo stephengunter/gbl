@@ -17,12 +17,14 @@ using Microsoft.IdentityModel.Tokens;
 using NLog;
 using ApplicationCore.Authorization;
 using ApplicationCore.Middlewares;
+using ApplicationCore.Consts;
 using Microsoft.Extensions.Hosting;
 using ApplicationCore.DI;
 using ApplicationCore;
 using Microsoft.AspNetCore.Http;
 using ApplicationCore.Hubs;
 using Hangfire;
+using Web.Hubs;
 
 namespace Web
 {
@@ -119,8 +121,10 @@ namespace Web
 
 			services.AddSignalR();
 
+			services.AddMemoryCache();
 
-			services.AddHttpClient(Consts.Google, c =>
+
+			services.AddHttpClient(Common.Google, c =>
 			{
 				c.BaseAddress = new Uri("https://www.google.com");
 			});
@@ -170,6 +174,7 @@ namespace Web
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
+				endpoints.MapHub<NotificationsHub>("/notifications");
 			});
 
 		}

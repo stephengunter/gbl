@@ -11,6 +11,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201003012952_Company.cs" />
+    <Compile Remove="Migrations\20201003012952_Company.Designer.cs" />
+    <Compile Remove="Migrations\20201003013108_Company.cs" />
+    <Compile Remove="Migrations\20201003013108_Company.Designer.cs" />
+    <Compile Remove="Migrations\20201003013506_remove Company.cs" />
+    <Compile Remove="Migrations\20201003013506_remove Company.Designer.cs" />
+    <Compile Remove="Migrations\20201003013804_Company.cs" />
+    <Compile Remove="Migrations\20201003013804_Company.Designer.cs" />
+    <Compile Remove="Views\Common\Post.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />

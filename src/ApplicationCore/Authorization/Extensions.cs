@@ -4,6 +4,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using ApplicationCore.Helpers;
+using ApplicationCore.Consts;
+
 
 namespace ApplicationCore.Authorization
 {
@@ -41,7 +43,7 @@ namespace ApplicationCore.Authorization
 			var roles = CurrentUseRoles(context);
 			if (roles.IsNullOrEmpty()) return false;
 
-			var match = roles.Where(r => r.ToUpper() == ApplicationCore.Consts.DevRoleName.ToUpper()).FirstOrDefault();
+			var match = roles.Where(r => r.EqualTo(RoleNames.Dev)).FirstOrDefault();
 
 			return match != null;
 		}
@@ -51,20 +53,12 @@ namespace ApplicationCore.Authorization
 			var roles = CurrentUseRoles(context);
 			if (roles.IsNullOrEmpty()) return false;
 
-			var match = roles.Where(r => r.ToUpper() == ApplicationCore.Consts.BossRoleName.ToUpper()).FirstOrDefault();
+			var match = roles.Where(r => r.EqualTo(RoleNames.Boss)).FirstOrDefault();
 
 			return match != null;
 		}
 
-		public static bool CurrentUserIsSubscriber(this AuthorizationHandlerContext context)
-		{
-			var roles = CurrentUseRoles(context);
-			if (roles.IsNullOrEmpty()) return false;
-
-			var match = roles.Where(r => r.ToUpper() == ApplicationCore.Consts.SubscriberRoleName.ToUpper()).FirstOrDefault();
-
-			return match != null;
-		}
+		
 
 	}
 }

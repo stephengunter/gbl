@@ -34,18 +34,6 @@ namespace Web.Controllers
 			
 		}
 
-		protected bool CurrentUserIsSubscriber
-		{
-			get
-			{
-				var roles = CurrentUseRoles;
-				if (roles.IsNullOrEmpty()) return false;
-				var match = roles.Where(r => r.ToUpper() == ApplicationCore.Consts.SubscriberRoleName.ToUpper()).FirstOrDefault();
-
-				return match != null;
-			}
-		}
-
 		protected IActionResult RequestError(string key, string msg)
 		{
 			ModelState.AddModelError(key, msg);

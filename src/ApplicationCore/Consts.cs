@@ -2,19 +2,25 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore
+namespace ApplicationCore.Consts
 {
-    public class Consts
+    public static class Common
     {
         public static string Google => "Google";
-
-        public static string BossRoleName => "Boss";
-        public static string DevRoleName => "Dev";
-        public static string SubscriberRoleName => "Subscriber";
-
-        public static string Notifications => "notifications";
-
+        public static string Notifications => "Notifications";
         public static string MAILCONTENT => "MAILCONTENT";
+    }
+
+    public static class RoleNames
+    {
+        public static string Boss => "Boss";
+        public static string Dev => "Dev";
+    }
+
+    public static class CacheKeys
+    {
+        public static string Cities => "Cities";
+        public static string Categories => "Categories";
     }
 
     public enum PaymentTypes

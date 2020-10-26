@@ -15,5 +15,10 @@ namespace ApplicationCore.Models
 
 		public RefreshToken RefreshToken { get; set; }
 
+
+		public ICollection<Post> Posts { get; set; }
+
+		public ICollection<Company> Companies { get; set; }
+
 	}
 }

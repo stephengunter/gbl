@@ -15,8 +15,6 @@ namespace ApplicationCore.Models
 
 		public string Title { get; set; }
 
-		public bool MultiAnswers { get; set; }
-
 		public ICollection<District> Districts { get; set; } = new List<District>();
 		
 	}
@@ -30,6 +28,9 @@ namespace ApplicationCore.Models
 		public int CityId { get; set; }
 
 		public City City { get; set; }
+
+
+		public string FullName => City != null ? $"{City.Title}{Title}" : "";
 
 	}
 }

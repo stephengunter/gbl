@@ -21,8 +21,18 @@ namespace ApplicationCore.DataAccess
 		public DbSet<RefreshToken> RefreshTokens { get; set; }
 		public DbSet<OAuth> OAuth { get; set; }
 
+		public DbSet<Company> Companies { get; set; }
+		public DbSet<Post> Posts { get; set; }
+
 		public DbSet<City> Cities { get; set; }
 		public DbSet<District> Districts { get; set; }
+
+		public DbSet<Notice> Notices { get; set; }
+		public DbSet<Receiver> Receivers { get; set; }
+
+		public DbSet<Category> Categories { get; set; }
+
+
 		public DbSet<ReviewRecord> ReviewRecords { get; set; }
 
 
