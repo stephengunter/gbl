@@ -21,6 +21,7 @@ namespace ApplicationCore.Services
 
         Task<Company> CreateAsync(Company company);
         Task UpdateAsync(Company existingEntity, Company company);
+        void UpdateMany(List<Company> companies);
         Task RemoveAsync(Company company);
         Task TopAsync(Company company);
     }
@@ -36,18 +37,8 @@ namespace ApplicationCore.Services
 
 
         public async Task<IEnumerable<Company>> FetchByUserAsync(string userId)
-        { 
-            var allItems = await _companyRepository.ListAsync(new CompanyFilterSpecification(userId));
-
-            var items = allItems.Where(x => x.ParentId == 0).ToList();
-
-            foreach (var item in items)
-            {
-                item.LoadSubItems(allItems);
-            }
-
-            return items;
-        }
+            => await _companyRepository.ListAsync(new CompanyFilterSpecification(userId));
+        
         
         public async Task<Company> CreateAsync(Company company) => await _companyRepository.AddAsync(company);
 
@@ -58,6 +49,8 @@ namespace ApplicationCore.Services
 
         public async Task UpdateAsync(Company existingEntity, Company company)
             => await _companyRepository.UpdateAsync(existingEntity, company);
+
+        public void UpdateMany(List<Company> companies) => _companyRepository.UpdateRange(companies);
 
         public async Task RemoveAsync(Company company)
         {

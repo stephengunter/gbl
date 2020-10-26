@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.Helpers;
+using ApplicationCore.Models;
 using ApplicationCore.Services;
 using ApplicationCore.Views;
 using ApplicationCore.ViewServices;
@@ -30,9 +31,18 @@ namespace Web.Controllers.Api
 			var companies = await _companiesService.FetchByUserAsync(CurrentUserId);
 			if (companies.IsNullOrEmpty()) return Ok(new List<CompanyViewModel>());
 
-			companies = companies.GetOrdered();
+			var rootCompanies = companies.Where(x => x.IsRootItem);
+			var subCompanies = companies.Where(x => !x.IsRootItem);
 
-			return Ok(companies.MapViewModelList(_mapper));
+			foreach (var rootItem in rootCompanies)
+			{
+				rootItem.LoadSubItems(subCompanies);
+			}
+
+
+			rootCompanies = rootCompanies.GetOrdered();
+
+			return Ok(rootCompanies.MapViewModelList(_mapper));
 		}
 
 		[HttpGet("create")]
@@ -95,6 +105,30 @@ namespace Web.Controllers.Api
 
 			company.SetUpdated(CurrentUserId);
 			await _companiesService.TopAsync(company);
+
+			return Ok();
+		}
+
+		[HttpPost("orders")]
+		public async Task<ActionResult> Orders([FromBody] List<SubOrderRequest> models)
+		{
+			var companies = await _companiesService.FetchByUserAsync(CurrentUserId);
+
+			var subCompanies = new List<Company>();
+			foreach (var model in models)
+			{
+				for (int i = 0; i < model.Orders.Count; i++)
+				{
+					var subCompany = companies.FirstOrDefault(x => x.Id == model.Orders[i]);
+					subCompany.Order = i;
+
+					subCompany.SetUpdated(CurrentUserId);
+					subCompanies.Add(subCompany);
+				}
+				
+			}
+
+			_companiesService.UpdateMany(subCompanies);
 
 			return Ok();
 		}

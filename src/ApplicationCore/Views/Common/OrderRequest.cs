@@ -12,4 +12,12 @@ namespace ApplicationCore.Views
 
         public bool Up { get; set; }
     }
+
+
+    public class SubOrderRequest
+    {
+        public int Id { get; set; }   //ParentId
+
+        public List<int> Orders { get; set; }
+    }
 }
